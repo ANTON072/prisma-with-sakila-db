@@ -8,7 +8,18 @@ async function main() {
       fname: "William",
       lname: "Turner",
       eye_color: "BL",
-      birth_date: "1972-05-27",
+      birth_date: new Date("2023-10-21"),
     },
   });
+  console.log(person);
 }
+
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
