@@ -33,7 +33,7 @@ model address {
   store       store[]
 
   @@index([city_id], map: "idx_fk_city_id")
-  @@index([location(length: 32)], map: "idx_location")
+  @@index([location], map: "idx_location")
 }
 
 model category {
@@ -93,7 +93,7 @@ model film {
   length                                       Int?            @db.UnsignedSmallInt
   replacement_cost                             Decimal         @default(19.99) @db.Decimal(5, 2)
   rating                                       film_rating?    @default(G)
-  special_features                             String?         @db.Text  // Changed from String? to String? @db.Tex
+  special_features                             String?         @db.Text // Changed from String? to String? @db.Tex
   last_update                                  DateTime        @default(now()) @db.Timestamp(0)
   language_film_language_idTolanguage          language        @relation("film_language_idTolanguage", fields: [language_id], references: [language_id], map: "fk_film_language")
   language_film_original_language_idTolanguage language?       @relation("film_original_language_idTolanguage", fields: [original_language_id], references: [language_id], onDelete: Restrict, map: "fk_film_language_original")
@@ -230,7 +230,7 @@ model store {
   @@index([address_id], map: "idx_fk_address_id")
 }
 
-enum film_rating{
+enum film_rating {
   G
   PG
   PG_13 @map("PG-13")
@@ -239,29 +239,29 @@ enum film_rating{
 }
 
 model person {
-  person_id Int @id @default(autoincrement()) @db.UnsignedSmallInt
-  fname String @db.VarChar(20)
-  lname String @db.VarChar(20)
-  eye_color eye_color
-  birth_date DateTime @db.Date
-  street String @db.VarChar(30)
-  city String @db.VarChar(20)
-  state String @db.VarChar(20)
-  country String @db.VarChar(20)
-  postal_code String @db.VarChar(20)
+  person_id     Int             @id @default(autoincrement()) @db.UnsignedSmallInt
+  fname         String          @db.VarChar(20)
+  lname         String          @db.VarChar(20)
+  eye_color     eye_color
+  birth_date    DateTime        @db.Date
+  street        String?         @db.VarChar(30)
+  city          String?         @db.VarChar(20)
+  state         String?         @db.VarChar(20)
+  country       String?         @db.VarChar(20)
+  postal_code   String?         @db.VarChar(20)
   favorite_food favorite_food[]
 }
 
-enum eye_color{
+enum eye_color {
   BR
   BL
   GR
 }
 
 model favorite_food {
-  person_id Int @db.UnsignedSmallInt
-  food String @db.VarChar(20)
-  person person @relation(fields: [person_id], references: [person_id])
+  person_id Int    @db.UnsignedSmallInt
+  food      String @db.VarChar(20)
+  person    person @relation(fields: [person_id], references: [person_id])
 
   @@id([person_id, food])
 }

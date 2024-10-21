@@ -22,7 +22,6 @@ CREATE TABLE `address` (
     `last_update` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
 
     INDEX `idx_fk_city_id`(`city_id`),
-    -- INDEX `idx_location`(`location`(32)),
     INDEX `idx_location`(`location`),
     PRIMARY KEY (`address_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -213,18 +212,26 @@ CREATE TABLE `store` (
 
 -- CreateTable
 CREATE TABLE `person` (
-    `personId` SMALLINT UNSIGNED NOT NULL,
+    `person_id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `fname` VARCHAR(20) NOT NULL,
     `lname` VARCHAR(20) NOT NULL,
     `eye_color` ENUM('BR', 'BL', 'GR') NOT NULL,
     `birth_date` DATE NOT NULL,
-    `street` VARCHAR(30) NOT NULL,
-    `city` VARCHAR(20) NOT NULL,
-    `state` VARCHAR(20) NOT NULL,
-    `country` VARCHAR(20) NOT NULL,
-    `postal_code` VARCHAR(20) NOT NULL,
+    `street` VARCHAR(30) NULL,
+    `city` VARCHAR(20) NULL,
+    `state` VARCHAR(20) NULL,
+    `country` VARCHAR(20) NULL,
+    `postal_code` VARCHAR(20) NULL,
 
-    PRIMARY KEY (`personId`)
+    PRIMARY KEY (`person_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `favorite_food` (
+    `person_id` SMALLINT UNSIGNED NOT NULL,
+    `food` VARCHAR(20) NOT NULL,
+
+    PRIMARY KEY (`person_id`, `food`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
@@ -292,3 +299,6 @@ ALTER TABLE `store` ADD CONSTRAINT `fk_store_address` FOREIGN KEY (`address_id`)
 
 -- AddForeignKey
 ALTER TABLE `store` ADD CONSTRAINT `fk_store_staff` FOREIGN KEY (`manager_staff_id`) REFERENCES `staff`(`staff_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `favorite_food` ADD CONSTRAINT `favorite_food_person_id_fkey` FOREIGN KEY (`person_id`) REFERENCES `person`(`person_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
