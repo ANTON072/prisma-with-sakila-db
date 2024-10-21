@@ -93,7 +93,7 @@ model film {
   length                                       Int?            @db.UnsignedSmallInt
   replacement_cost                             Decimal         @default(19.99) @db.Decimal(5, 2)
   rating                                       film_rating?    @default(G)
-  special_features                             String?
+  special_features                             String?         @db.Text  // Changed from String? to String? @db.Tex
   last_update                                  DateTime        @default(now()) @db.Timestamp(0)
   language_film_language_idTolanguage          language        @relation("film_language_idTolanguage", fields: [language_id], references: [language_id], map: "fk_film_language")
   language_film_original_language_idTolanguage language?       @relation("film_original_language_idTolanguage", fields: [original_language_id], references: [language_id], onDelete: Restrict, map: "fk_film_language_original")
@@ -133,6 +133,7 @@ model film_text {
   title       String  @db.VarChar(255)
   description String? @db.Text
 
+  // @@index([title(length: 191), description(length: 100)], map: "idx_title_description")
   @@index([title(length: 191), description(length: 191)], map: "idx_title_description")
 }
 
@@ -229,10 +230,29 @@ model store {
   @@index([address_id], map: "idx_fk_address_id")
 }
 
-enum film_rating {
+enum film_rating{
   G
   PG
   PG_13 @map("PG-13")
   R
   NC_17 @map("NC-17")
+}
+
+model person {
+  personId Int @id @db.UnsignedSmallInt
+  fname String @db.VarChar(20)
+  lname String @db.VarChar(20)
+  eye_color eye_color
+  birth_date DateTime @db.Date
+  street String @db.VarChar(30)
+  city String @db.VarChar(20)
+  state String @db.VarChar(20)
+  country String @db.VarChar(20)
+  postal_code String @db.VarChar(20)
+}
+
+enum eye_color{
+  BR
+  BL
+  GR
 }
