@@ -239,7 +239,7 @@ enum film_rating{
 }
 
 model person {
-  person_id Int @id @db.UnsignedSmallInt
+  person_id Int @id @default(autoincrement()) @db.UnsignedSmallInt
   fname String @db.VarChar(20)
   lname String @db.VarChar(20)
   eye_color eye_color
